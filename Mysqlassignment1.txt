@@ -1,0 +1,67 @@
+create database company;
+use company;
+create table SalesPeople(
+Snum int,
+primary key(Snum),
+Sname varchar(60),
+City varchar(40),
+Comm int,
+unique(Sname)
+);
+
+insert into SalesPeople(Snum,Sname,City,Comm) values (1001,"Peel","London",12);
+insert into SalesPeople(Snum,Sname,City,Comm) values (1002,"Serres","Sanjose",13);
+insert into SalesPeople(Snum,Sname,City,Comm) values (1004," Motika", "London",12);
+insert into SalesPeople(Snum,Sname,City,Comm) values (1007," Rifkin", "Barcelona",12);
+insert into SalesPeople(Snum,Sname,City,Comm) values (1003,"Axelrod", "Newyork",12);
+
+
+
+
+
+
+create table Customers(
+Cnum int,
+primary key(Cnum),
+Cname varchar(45),
+City varchar(50) not null,
+Snum int,
+foreign key (Snum) references SalesPeople(Snum)
+);
+
+insert into Customers(Cnum, Cname, City,Snum) values (2001  ,"Hoffman ","London",1001);
+insert into Customers(Cnum, Cname, City,Snum) values (2002  ,"Giovanni ","Rome ",1003);
+insert into Customers(Cnum, Cname, City,Snum) values (2003  ,"Liu ","Sanjose ",1002);
+insert into Customers(Cnum, Cname, City,Snum) values (2004  ,"Grass ","Berlin ",1002);
+insert into Customers(Cnum, Cname, City,Snum) values (2006 ,"Clemens ","London ",1001);
+insert into Customers(Cnum, Cname, City,Snum) values (2008 ,"Cisneros ","Sanjose ",1007);
+insert into Customers(Cnum, Cname, City,Snum) values (2007 ,"Pereira ","Rome ",1004);
+
+create table Orders(
+Onum int,
+primary key(Onum),
+Amt double,
+Odate date,
+Cnum int,
+foreign key(Cnum) references Customers(Cnum),
+Snum int,
+foreign key(Snum) references SalesPeople(Snum)
+);
+
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3001,18.69, "1990-10-3 ",2008 ,1007);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3003, 767.19, "1990-10-3", 2001 ,1001);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3002, 1900.10 ,"1990-10-3", 2007 ,1004);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3005  ,5160.45, "1990-10-3 ",2003 ,1002);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3006  ,1098.16 ,"1990-10-3 ",2008 ,1007);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3009 ,1713.23, "1990-10-4", 2002, 1003);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3007 , 75.75 ,"1990-10-4" ,2004 ,1002);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3008  ,4273.00, "1990-10-5", 2006, 1001);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3010 , 1309.95 ,"1990-10-6" ,2004 ,1002);
+insert into Orders(Onum, Amt, Odate,Cnum,Snum) values (3011  ,9891.88 ,"1990-10-6", 2006 ,1001);
+
+
+1.select count(Sname)  from salespeople where Sname like "A%" or Sname like "a%";
+2.select Orders.Onum, Orders.Snum, SalesPeople.Snum,Salespeople.Sname from Orders inner join Salespeople on Orders.Snum=SalesPeople.Snum where Orders.Amt>=2000;
+3.select Sname,city, count(*) from Salespeople where city ="Newyork" group by Sname, City;
+4.select Sname,city,count(*) from  Salespeople where city ="London" or city ="Paris" group by Sname,City;
+5.select SalesPeople.Sname, (select count(*) from Orders where Snum = SalesPeople.Snum) as OrderCount from SalesPeople;
